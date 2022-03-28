@@ -193,6 +193,41 @@
                     })
                 }
                 this.getData()
+            },
+            Delete: function(id){
+                let token = {
+                    headers : {"Authorization" : "Bearer" + this.$cookies.get("Authorization")}
+                }
+
+                Swal.fire({
+                    tittle: 'Hapus Data Siswa',
+                    text: 'Apakah anda yakin menghapus data ini?',
+                    icon: 'warning',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Ya',
+                    denyButtonText: `Tidak`,
+                }).then((result)=>{
+                    if(result.isConfirmed){
+                        axios.delete(api_url + '/siswa/' + id, token)
+                        .then( response => {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.data.message,
+                                icon: 'success',
+                                confirmButtonText: 'Cool'
+                            })
+                            this.getData()
+                        })
+                    } else if(result.isDenied){
+                        Swal.fire({
+                            title: 'Batal!',
+                            text: 'Data tidak jadi dihapus',
+                            icon: 'error',
+                            confirmButtonText: 'Cool'
+                        })
+                    }
+                })
             }
         },
         mounted() {
