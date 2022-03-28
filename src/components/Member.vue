@@ -26,6 +26,7 @@
                                 <th>GENDER</th>
                                 <th>ALAMAT</th>
                                 <th>KELAS</th>
+                                <th>AKSI</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,6 +37,10 @@
                                 <td>{{ls.gender}}</td>
                                 <td>{{ls.alamat}}</td>
                                 <td>{{ls.nama_kelas}}</td>
+                                <td>
+                                    <button class="btn btn-info" @click="Edit(ls)" data-bs-toggle="modal" data-bs-target="#member_modal" ><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                    <button class="btn btn-danger" @click="Delete(ls.id)"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -143,6 +148,15 @@
                 this.kelas="",
                 this.action = "insert"
             },
+            Edit: function(ls){
+                this.id = ls.id,
+                this.nama_siswa = ls.nama_siswa,
+                this.tanggal_lahir = ls.tanggal_lahir,
+                this.gender = ls.gender,
+                this.alamat = ls.alamat,
+                this.kelas = ls.id_kelas,
+                this.action = 'update'
+            },
             Save: function(){
                 //token
                 let token ={
@@ -161,21 +175,29 @@
                     axios.post(api_url + "/siswa", form, token)
                     .then(response=>{
                         Swal.fire({
-                        title: 'Success!',
-                        text: response.data.message,
-                        icon: 'success',
-                        confirmButtonText: 'Cool'
-                    })
+                            title: 'Success!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Cool'
+                        })
                     })
                 } else {    //put
-                    
+                    axios.put(api_url + '/siswa/' + this.id, form, token)
+                    .then(response=>{
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Cool'
+                        })
+                    })
                 }
                 this.getData()
             }
         },
         mounted() {
             this.getData()
-            this.getKelas()
+            this.getKelas() 
         },
     }
 </script>
