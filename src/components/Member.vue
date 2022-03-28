@@ -21,6 +21,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>FOTO</th>
                                 <th>NAMA</th>
                                 <th>TANGGAL LAHIR</th>
                                 <th>GENDER</th>
@@ -32,12 +33,14 @@
                         <tbody>
                             <tr v-for="ls in list_siswa" :key="ls">
                                 <td>{{ls.id}}</td>
+                                <td><img :src="'http://localhost:8000/images/' + ls.image" width="150"></td>
                                 <td>{{ls.nama_siswa}}</td>
                                 <td>{{ls.tanggal_lahir}}</td>
                                 <td>{{ls.gender}}</td>
                                 <td>{{ls.alamat}}</td>
                                 <td>{{ls.nama_kelas}}</td>
                                 <td>
+                                    <button class="btn btn-default" @click="Edit(ls)" data-bs-toggle="modal" data-bs-target="#image_modal" ><i class="fas fa-image fa-fw"></i></button>
                                     <button class="btn btn-info" @click="Edit(ls)" data-bs-toggle="modal" data-bs-target="#member_modal" ><i class="fas fa-pencil-alt fa-fw"></i></button>
                                     <button class="btn btn-danger" @click="Delete(ls.id)"><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
@@ -97,6 +100,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Image Modal -->
+        <div class="modal fade" id="image_modal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Member Data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image</label>
+                            <input type="file" class="form-control" id="image" @change="uploadImage($event)">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" @click="Upload(id)" data-bs-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </template>
 <script>
     module.exports = {
@@ -109,6 +135,7 @@
                 gender:"",
                 alamat:"",
                 kelas:"",
+                image:"",
                 action:"",
                 list_siswa:[],
                 listKelas:[],
@@ -156,6 +183,29 @@
                 this.alamat = ls.alamat,
                 this.kelas = ls.id_kelas,
                 this.action = 'update'
+            },
+            uploadImage: function(e){
+                this.image = e.target.files[0]
+            },
+            Upload: function(id){
+                let token = {
+                    headers : {
+                        "Authorization" : "Bearer" + this.$cookies.get("Authorization"),
+                        'Content-Type' : 'multipart/form-data',
+                    }
+                }
+                let form = new FormData()
+                form.append("image",this.image)
+                axios.post(api_url + '/siswa/uploadImage/' + id, form, token)
+                .then(response=>{
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
+                    this.getData()
+                })
             },
             Save: function(){
                 //token
