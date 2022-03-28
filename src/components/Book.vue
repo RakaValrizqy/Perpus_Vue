@@ -4,10 +4,9 @@
             <h1 class="mt-4">Book</h1>
             <ol class="breadcrumb mb-4">
                 <router-link to="/" class="nav-link">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                home
-                
-            </ol>
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    home
+                </ol>
 
             <div class="card mb-4">
                 <div class="card-header">

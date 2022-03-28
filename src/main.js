@@ -13,6 +13,11 @@ var router = [
         name: "Book", 
         component: httpVueLoader("./src/components/Book.vue")
     },
+    {   
+      path: "/member", 
+      name: "Member", 
+      component: httpVueLoader("./src/components/Member.vue")
+    },
 
 ];
 
