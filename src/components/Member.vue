@@ -232,7 +232,7 @@
         },
         mounted() {
             this.getData()
-            this.getKelas() 
+            this.getKelas()
         },
     }
 </script>
