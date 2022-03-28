@@ -18,7 +18,7 @@
                     <table id="datatablesSimple" class="table table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>ID MEMBER</th>
+                                <th>ID</th>
                                 <th>NAMA</th>
                                 <th>TANGGAL LAHIR</th>
                                 <th>GENDER</th>
